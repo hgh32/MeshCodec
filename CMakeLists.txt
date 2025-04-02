@@ -59,7 +59,7 @@ add_library(MeshCodec
 if (MSVC)
     target_compile_options(MeshCodec PRIVATE /W4 /wd4244 /wd4127 /Zc:__cplusplus)
 else()
-    target_compile_options(MeshCodec PRIVATE -Wall -Wextra -fno-plt -mfpmath=sse)
+    target_compile_options(MeshCodec PRIVATE -Wall -Wextra -fno-plt)
 endif()
 
 target_include_directories(MeshCodec PRIVATE lib/zstd/lib)

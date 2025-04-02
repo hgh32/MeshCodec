@@ -17,7 +17,12 @@ using s64 = std::int64_t;
 
 using size_t = std::size_t;
 
+#ifdef _MSC_VER
+#error "too lazy to do a float16 implementation in msvc rn, maybe I'll just use a preexisting one from the internet"
+#else
 using f16 = _Float16;
+#endif
+
 using f32 = float;
 using f64 = double;
 
