@@ -1,0 +1,11 @@
+.vscode/*
+.vs/*
+build/*
+build_vs/*
+out/*
+*.mc
+*.bin
+*.chunk
+*.bfres
+functions.txt
+output.txt
