@@ -143,7 +143,7 @@ bool DecompressMC(void* dst, size_t dstSize, const void* src, size_t srcSize, vo
     return true;
 }
 
-bool DecompressChunk(void* dst, size_t dstSize [[maybe_unused]], const void* src, size_t srcSize, void* workBuffer, size_t workBufferSize) {
+bool DecompressChunk(void* dst, size_t dstSize, const void* src, size_t srcSize, void* workBuffer, size_t workBufferSize) {
     if (srcSize < 0x1c)
         return false;
     
@@ -197,6 +197,27 @@ bool DecompressChunk(void* dst, size_t dstSize [[maybe_unused]], const void* src
     }
 
     return ConvertResult(static_cast<u64>(result)) == 0;
+}
+
+bool DecompressQuad(void* dst, size_t dstSize, const void* src, size_t srcSize, void* workBuffer, size_t workBufferSize) {
+    if (srcSize < 0x4)
+        return false;
+    
+    // first 4 bytes is the crbin id
+    const void* frameHeader = reinterpret_cast<const void*>(reinterpret_cast<uintptr_t>(src) + 4);
+
+    if (workBufferSize < sizeof(ZSTD_DCtx))
+        return false;
+
+    const size_t decompressedSize = ZSTD_getFrameContentSize(frameHeader, srcSize - 4);
+
+    if (dstSize < decompressedSize)
+        return false;
+
+    ZSTD_DCtx* dctx = ZSTD_initStaticDCtx(workBuffer, workBufferSize);
+    const size_t result = ZSTD_decompressDCtx(dctx, dst, dstSize, frameHeader, srcSize - 4);
+
+    return !ZSTD_isError(result);
 }
 
 } // namespace mc

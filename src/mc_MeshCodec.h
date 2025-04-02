@@ -54,6 +54,7 @@ struct ResChunkHeader {
     ResCompressionHeader compHeader;
 };
 
-bool DecompressChunk(void* dst, size_t dstSize [[maybe_unused]], const void* src, size_t srcSize, void* workBuffer, size_t workBufferSize);
+bool DecompressChunk(void* dst, size_t dstSize, const void* src, size_t srcSize, void* workBuffer, size_t workBufferSize);
+bool DecompressQuad(void* dst, size_t dstSize, const void* src, size_t srcSize, void* workBuffer, size_t workBufferSize);
 
 } // namespace mc
