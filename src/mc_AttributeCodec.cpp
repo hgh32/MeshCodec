@@ -2444,7 +2444,7 @@ void DecodeBackrefs(VertexStreamContext& ctx, s32 vertexCount [[maybe_unused]], 
                 const u8 keepMask = ~(copyMask << attrShift);
                 for (; numGroups != 0; --numGroups) {
                     for (u32 i = groups->GetCopyCount(); i != 0; --i) {
-                        *reinterpret_cast<u64*>(output) = MASK(*(output - groups->backRefOffset), attrShift, copyMask) | (*output & keepMask);
+                        *reinterpret_cast<u8*>(output) = MASK(*(output - groups->backRefOffset), attrShift, copyMask) | (*output & keepMask);
                         output += stride;
                     }
                     ++groups;
