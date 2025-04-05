@@ -1725,16 +1725,12 @@ void DecodeTriangleFloatDeltas(VertexStreamContext& ctx, s32 vertexCount [[maybe
                             std::memcpy(&value1, output - index1 * stride, sizeof(Vec4h));
                             std::memcpy(&value2, output - index2 * stride, sizeof(Vec4h));
                             Vec4h values;
-#if !defined(__aarch64__) && !defined(_M_ARM64)
                             // intermediates are kept as floats instead of converting between every step
                             // there might be a way to tell gcc to do this automatically, but I couldn't figure it out
                             Vec4f temp0, temp1, temp2, temp;
                             HalfToSingle(value0, temp0); HalfToSingle(value1, temp1); HalfToSingle(value2, temp2);
                             temp.v = temp1.v + temp2.v - temp0.v;
                             SingleToHalf(temp, values);
-#else
-                            values.v = value1 + value2 - value0;
-#endif
                             WriteHalfFloatDeltas<3>(reinterpret_cast<u16*>(output), inputStreams, streamsRemaining, values);
                         } else if constexpr (BitSize == 32) {
                             f32x4 value0, value1, value2;
@@ -1750,10 +1746,10 @@ void DecodeTriangleFloatDeltas(VertexStreamContext& ctx, s32 vertexCount [[maybe
                     } else {
                         if (tableIndex == 0) {
                             if constexpr (BitSize == 16) {
-                                Vec4h values = { 0, 0, 0, 0 };
+                                Vec4h values = {};
                                 WriteHalfFloatDeltas<3>(reinterpret_cast<u16*>(output), inputStreams, streamsRemaining, values);
                             } else if constexpr (BitSize == 32) {
-                                Vec4f values = { 0, 0, 0, 0 };
+                                Vec4f values = {};
                                 WriteFloatDeltas<3>(reinterpret_cast<u32*>(output), inputStreams, streamsRemaining, values);
                             } else {
                                 static_assert(false, "you shouldn't be here");
@@ -1799,14 +1795,10 @@ void DecodeTriangleFloatDeltas(VertexStreamContext& ctx, s32 vertexCount [[maybe
                         std::memcpy(&value1, output - index1 * stride, sizeof(Vec4h));
                         std::memcpy(&value2, output - index2 * stride, sizeof(Vec4h));
                         Vec4h values;
-#if !defined(__aarch64__) && !defined(_M_ARM64)
                         Vec4f temp0, temp1, temp2, temp;
                         HalfToSingle(value0, temp0); HalfToSingle(value1, temp1); HalfToSingle(value2, temp2);
                         temp.v = temp1.v + temp2.v - temp0.v;
                         SingleToHalf(temp, values);
-#else
-                        values.v = value1 + value2 - value0;
-#endif
                         WriteHalfFloatDeltas<3>(reinterpret_cast<u16*>(output), inputStreams, streamsRemaining, values);
                     } else if constexpr (BitSize == 32) {
                         f32x4 value0, value1, value2;
@@ -1822,10 +1814,10 @@ void DecodeTriangleFloatDeltas(VertexStreamContext& ctx, s32 vertexCount [[maybe
                 } else {
                     if (tableIndex == 0) {
                         if constexpr (BitSize == 16) {
-                            Vec4h values = { 0, 0, 0, 0 };
+                            Vec4h values = {};
                             WriteHalfFloatDeltas<3>(reinterpret_cast<u16*>(output), inputStreams, streamsRemaining, values);
                         } else if constexpr (BitSize == 32) {
-                            Vec4f values = { 0, 0, 0, 0 };
+                            Vec4f values = {};
                             WriteFloatDeltas<3>(reinterpret_cast<u32*>(output), inputStreams, streamsRemaining, values);
                         } else {
                             static_assert(false, "you shouldn't be here");
@@ -2170,10 +2162,10 @@ void DecodeTriangleTexCoordsFloat(VertexStreamContext& ctx, s32 vertexCount [[ma
             } else {
                 if (tableIndex == 0) {
                     if constexpr (std::is_same_v<T, f16>) {
-                        Vec4h computed = { 0, 0, 0, 0 };
+                        Vec4h computed = {};
                         WriteHalfFloatDeltas<2>(reinterpret_cast<u16*>(output), &inputStreams[1], streamsRemaining - 1, computed);
                     } else if constexpr (std::is_same_v<T, f32>) {
-                        Vec4f computed = { 0, 0, 0, 0 };
+                        Vec4f computed = {};
                         WriteFloatDeltas<2>(reinterpret_cast<u32*>(output), &inputStreams[1], streamsRemaining - 1, computed);
                     } else {
                         static_assert(false, "you shouldn't be here");

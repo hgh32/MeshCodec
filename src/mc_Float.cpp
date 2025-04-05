@@ -1,7 +1,7 @@
 #include "mc_Float.h"
 
 #ifdef _MSC_VER
-#include <mmintrin.h>
+#include <intrin.h>
 #elif defined(__GNUC__)
 #include <xmmintrin.h>
 #endif
@@ -9,7 +9,7 @@
 namespace mc::detail {
 
 u32 InitFPUState() {
-#ifdef __x86_64__
+#if defined(__x86_64__) || defined(_M_X64)
     u32 csr = _mm_getcsr();
 #else
 #if defined(__clang__) || !defined(__GNUC__)  
@@ -29,7 +29,7 @@ u32 InitFPUState() {
 #else
     // idk I'm lazy
 #endif
-#ifdef __x86_64__
+#if defined(__x86_64__) || defined(_M_X64)
     _mm_setcsr(newCsr);
 #else
 #if defined(__clang__) || !defined(__GNUC__)
@@ -42,7 +42,7 @@ u32 InitFPUState() {
 }
 
 void SetFPUState(u32 state) {
-#ifdef __x86_64__
+#if defined(__x86_64__) || defined(_M_X64)
     _mm_setcsr(state);
 #else
 #if defined(__clang__) || !defined(__GNUC__)

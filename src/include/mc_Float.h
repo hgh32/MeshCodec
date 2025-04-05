@@ -14,7 +14,54 @@ void SetFPUState(u32 state);
 // does msvc really not have 16 bit float support...
 // whatever
 #ifdef _MSC_VER
-#error "too lazy to do a float16 implementation in msvc rn, maybe I'll just use a preexisting one from the internet"
+struct f16x4 {
+    f16 values[4];
+
+    f16x4() = default;
+    f16x4(f16 x, f16 y, f16 z, f16 w) {
+        values[0] = x; values[1] = y; values[2] = z; values[3] = w;
+    }
+};
+struct f32x4 {
+    f32 values[4];
+
+    f32x4() = default;
+    f32x4(float x, float y, float z, float w) {
+        values[0] = x; values[1] = y; values[2] = z; values[3] = w;
+    }
+
+    f32x4 operator=(const f32x4& other) {
+        std::memcpy(&this->values, &other.values, sizeof(f32x4));        
+        return *this;
+    }
+
+    f32x4 operator+(const f32x4& other) const {
+        return {
+            this->values[0] + other.values[0],
+            this->values[1] + other.values[1],
+            this->values[2] + other.values[2],
+            this->values[3] + other.values[3],
+        };
+    }
+
+    f32x4 operator-(const f32x4& other) const {
+        return {
+            this->values[0] - other.values[0],
+            this->values[1] - other.values[1],
+            this->values[2] - other.values[2],
+            this->values[3] - other.values[3],
+        };
+    }
+
+    f32x4 operator*(const f32x4& other) const {
+        return {
+            this->values[0] * other.values[0],
+            this->values[1] * other.values[1],
+            this->values[2] * other.values[2],
+            this->values[3] * other.values[3],
+        };
+    }
+};
 #else
 typedef f16 f16x4 __attribute__ ((vector_size (8)));
 typedef f32 f32x4 __attribute__ ((vector_size (16)));

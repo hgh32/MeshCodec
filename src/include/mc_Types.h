@@ -2,6 +2,10 @@
 
 #include <cstdint>
 
+#ifdef _MSC_VER
+#include "float16.h"
+#endif
+
 // it's kinda clunky to have them in the namespace here but I'd rather they don't cause potential redefinitions when using other libraries
 namespace mc {
 
@@ -18,7 +22,19 @@ using s64 = std::int64_t;
 using size_t = std::size_t;
 
 #ifdef _MSC_VER
-#error "too lazy to do a float16 implementation in msvc rn, maybe I'll just use a preexisting one from the internet"
+struct f16 {
+    u16 _value;
+
+    f16() = default;
+
+    f16(float v) {
+        _value = encode_flt16(v);
+    }
+    
+    operator float() const {
+        return decode_flt16(_value);
+    }
+};
 #else
 using f16 = _Float16;
 #endif
