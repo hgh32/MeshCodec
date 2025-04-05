@@ -88,9 +88,9 @@ s32 StackAllocator::DecompressFrame(const u8* data, size_t size) {
 
     DecompContext ctx;
     ctx.currentPos = ptr;
-    ctx.bitStream0 = std::move(BitStreamReader(reinterpret_cast<const u64*>(data + bitStreamOffset0 - 8), BitStreamReader::Direction::Backwards));
-    ctx.bitStream1 = std::move(BitStreamReader(reinterpret_cast<const u64*>(data + bitStreamOffset0), BitStreamReader::Direction::Forwards));
-    ctx.bitStream2 = std::move(BitStreamReader(reinterpret_cast<const u64*>(data + bitStreamOffset0 + bitStreamOffset1 - 8), BitStreamReader::Direction::Backwards));
+    ctx.bitStream0 = BitStreamReader(reinterpret_cast<const u64*>(data + bitStreamOffset0 - 8), BitStreamReader::Direction::Backwards);
+    ctx.bitStream1 = BitStreamReader(reinterpret_cast<const u64*>(data + bitStreamOffset0), BitStreamReader::Direction::Forwards);
+    ctx.bitStream2 = BitStreamReader(reinterpret_cast<const u64*>(data + bitStreamOffset0 + bitStreamOffset1 - 8), BitStreamReader::Direction::Backwards);
 
     mCodec->Decompress(ctx);
 

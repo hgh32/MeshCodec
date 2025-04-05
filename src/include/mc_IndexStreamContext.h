@@ -6,7 +6,7 @@
 
 namespace mc {
 
-class DecompContext;
+struct DecompContext;
 class IndexDecompressor;
 class StackAllocator;
 

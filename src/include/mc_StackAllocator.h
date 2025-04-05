@@ -99,12 +99,12 @@ private:
     size_t mMemoryOffset;           // offset to the top of the last allocation in the stack
     size_t mLastAllocationStart;    // offset to the start of the last allocation in the stack
     size_t mPeakMemoryUsage;
-    u64 mAllocatorType;
+    [[maybe_unused]] u64 mAllocatorType;
     CodecBase* mCodec;
     u32 mStreamOffset;
     u32 mFrameEndOffset;
     u32 mPreviousFPUState;
-    u8 _44[0x80 - 0x44];
+    [[maybe_unused]] u8 _44[0x80 - 0x44];
 };
 
 struct CompressionFlags {

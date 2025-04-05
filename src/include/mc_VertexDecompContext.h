@@ -5,7 +5,7 @@
 
 namespace mc {
 
-class DecompContext;
+struct DecompContext;
 class VertexDecompressor;
 class StackAllocator;
 struct VertexStreamContext;
