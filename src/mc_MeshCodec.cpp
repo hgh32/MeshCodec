@@ -120,7 +120,7 @@ bool DecompressMC(void* dst, size_t dstSize, const void* src, size_t srcSize, vo
     if (fmshHeader->magic != ResMeshCodecHeader::cMagic)
         return false;
     
-    // for whatever reason, with sone files, ZSTD_decompressContinue writes way past the end of the buffer (even though it returns the correct size)
+    // for whatever reason, with some files, ZSTD_decompressContinue writes way past the end of the buffer (even though it returns the correct size)
     // unsure if this is because Nintendo made changes to the zstd implementation, but we can fix this with a hack by memsetting everything
     // past the end of the bfres file data to 0 - the game itself doesn't do this but it appears to work fine
     // it might also be ZSTD versions (totk uses 1.3.7 or something) but that version doesn't have ZSTD_DCtx's definition in a header file
