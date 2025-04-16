@@ -63,6 +63,13 @@ else()
     target_compile_options(MeshCodec PRIVATE -Wall -Wextra -fno-plt)
 endif()
 
+if(MINGW)
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -static-libgcc -static-libstdc++")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -static-libgcc -static-libstdc++")
+    
+    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -static")
+endif()
+
 target_include_directories(MeshCodec PRIVATE lib/zstd/lib)
 target_include_directories(MeshCodec PRIVATE src/include)
 target_include_directories(MeshCodec PUBLIC src/)
